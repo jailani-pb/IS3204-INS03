@@ -3,7 +3,16 @@ package week10.learningarrays;
 import java.util.Scanner;
 
 public class TwoDArray {
-
+	
+	// Initialise a Two Dimensional Arrays
+	// To represent a Tic Tac Toe Board
+	static char[][] ticTacToeBoard = 
+		{
+				{' ', ' ', ' '},
+				{' ', ' ', ' '},
+				{' ', ' ', ' '}
+		};
+	
 	public static void main(String[] args) {
 		// Another way to initialise a Two Dimensional Arrays
 //		char[][] ticTacToeBoard2 = new char[3][3];
@@ -19,14 +28,7 @@ public class TwoDArray {
 //		ticTacToeBoard2[2][2] = ' ';
 		
 		Scanner userInput = new Scanner(System.in);
-		// Initialise a Two Dimensional Arrays
-		// To represent a Tic Tac Toe Board
-		char[][] ticTacToeBoard = 
-			{
-					{' ', ' ', ' '},
-					{' ', ' ', ' '},
-					{' ', ' ', ' '}
-			};
+		
 		String input = "";
 		// A state to store the symbol of the current player
 		char playerSymbol = 'O';
@@ -37,19 +39,12 @@ public class TwoDArray {
 		// A state to store which player turn to play
 		boolean player1Turn = true;
 		
+		boolean draws = false;
+		
 		// The game will continue if no one wins yet
-		while(playerWin == false) {
+		while(playerWin == false && draws == false) {
 			// Print the tic tac toe board
-			System.out.println("\\ y   0    1    2");
-			System.out.println("x   ===============");
-			for(byte x = 0; x < ticTacToeBoard.length; x++) {
-				System.out.print(x + "   ");
-				for(byte y = 0; y < ticTacToeBoard[x].length; y++) {
-					System.out.print("| " + ticTacToeBoard[x][y] + " |");
-				}
-				System.out.println();
-				System.out.println("    ===============");
-			}
+			printTicTacToeBoard();
 			
 			// Change the player symbol depending on whose turn.
 			if(player1Turn == true) {
@@ -88,17 +83,75 @@ public class TwoDArray {
 						ticTacToeBoard[x][y] = playerSymbol;
 						
 						// Check if a player wins
-							// Check for all rows if 3 same symbol
-							// Check for all columns if 3 same symbol
-							// Check for diagonals if 3 same symbol
-						// Check for draws
-						
-						// Swap turns after playing.
-						if(player1Turn == true) {
-							player1Turn = false;
-						} else {
-							player1Turn = true;
+						// Check for all rows if 3 same symbol
+						for(int rows = 0; rows < 3; rows++) {
+							if(ticTacToeBoard[rows][0] == playerSymbol &&
+									ticTacToeBoard[rows][1] == playerSymbol &&
+									ticTacToeBoard[rows][2] == playerSymbol) {
+								playerWin = true;
+								break;
+							}
 						}
+						// Check for all columns if 3 same symbol
+						if(playerWin == false) {
+							for(int columns = 0; columns < 3; columns++) {
+								if(ticTacToeBoard[0][columns] == playerSymbol &&
+										ticTacToeBoard[1][columns] == playerSymbol &&
+										ticTacToeBoard[2][columns] == playerSymbol) {
+									playerWin = true;
+									break;
+								}
+							}
+						}
+						// Check for diagonals if 3 same symbol
+						if(playerWin == false) {
+							if(ticTacToeBoard[0][0] == playerSymbol &&
+									ticTacToeBoard[1][1] == playerSymbol &&
+									ticTacToeBoard[2][2] == playerSymbol) {
+								playerWin = true;
+							} else {
+								if(ticTacToeBoard[2][0] == playerSymbol &&
+										ticTacToeBoard[1][1] == playerSymbol &&
+										ticTacToeBoard[0][2] == playerSymbol) {
+									playerWin = true;
+								}
+							}
+						}
+						
+						if(playerWin == false) {
+							
+							// Check for draws
+							boolean containEmptySpace = false;
+							for(int rows = 0; rows < 3; rows++) {
+								for(int columns = 0; columns < 3; columns++) {
+									if(ticTacToeBoard[rows][columns] == ' ') {
+										containEmptySpace = true;
+										break;
+									}
+								}
+								if(containEmptySpace == true) {
+									break;
+								}
+							}
+							if(containEmptySpace == false) {
+								draws = true;
+								printTicTacToeBoard();
+								System.out.println("Its a draw.");
+							} else {
+								// Swap turns after playing.
+								if(player1Turn == true) {
+									player1Turn = false;
+								} else {
+									player1Turn = true;
+								}
+							}
+							
+						} else {
+							printTicTacToeBoard();
+							System.out.println("Player " + playerSymbol + " wins.");
+						}
+						
+						
 					} else {
 						System.out.println("This coordinate is already used.");
 					}
@@ -112,6 +165,19 @@ public class TwoDArray {
 		}
 		
 		
+	}
+	
+	public static void printTicTacToeBoard() {
+		System.out.println("\\ y   0    1    2");
+		System.out.println("x   ===============");
+		for(byte x = 0; x < ticTacToeBoard.length; x++) {
+			System.out.print(x + "   ");
+			for(byte y = 0; y < ticTacToeBoard[x].length; y++) {
+				System.out.print("| " + ticTacToeBoard[x][y] + " |");
+			}
+			System.out.println();
+			System.out.println("    ===============");
+		}
 	}
 	
 }
